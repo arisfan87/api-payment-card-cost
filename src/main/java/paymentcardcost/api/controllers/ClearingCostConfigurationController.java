@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import paymentcardcost.api.controllers.models.ClearingCostConfigurationRequest;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
-import paymentcardcost.api.service.IClearingCostService;
+import paymentcardcost.api.unit.service.IClearingCostService;
 
 import java.util.List;
 

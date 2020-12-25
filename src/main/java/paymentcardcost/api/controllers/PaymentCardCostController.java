@@ -9,7 +9,7 @@ import paymentcardcost.api.models.dto.CardCostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import paymentcardcost.api.service.IPaymentCardCostService;
+import paymentcardcost.api.unit.service.IPaymentCardCostService;
 
 @RestController()
 @RequestMapping("/api")

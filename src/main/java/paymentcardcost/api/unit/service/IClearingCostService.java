@@ -1,4 +1,4 @@
-package paymentcardcost.api.service;
+package paymentcardcost.api.unit.service;
 
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;

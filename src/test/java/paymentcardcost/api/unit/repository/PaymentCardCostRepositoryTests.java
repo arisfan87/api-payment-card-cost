@@ -1,4 +1,4 @@
-package paymentcardcost.api.repository;
+package paymentcardcost.api.unit.repository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

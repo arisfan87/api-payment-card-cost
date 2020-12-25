@@ -1,4 +1,4 @@
-package paymentcardcost.api.service;
+package paymentcardcost.api.unit.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ public class PaymentCardCostService implements IPaymentCardCostService {
 
     private IBinlistClientService binlistClientService;
     private PaymentCardCostRepository paymentCardCostRepository;
+    private final Double paymentCardDefaultCost = 10.0;
+    private final String paymentCardCountryOther = "Other";
 
     @Autowired
     public PaymentCardCostService(IBinlistClientService binlistClientService, PaymentCardCostRepository paymentCardCostRepository) {
@@ -32,12 +34,12 @@ public class PaymentCardCostService implements IPaymentCardCostService {
 
         CardCostDto cardCost = new CardCostDto();
 
-        PaymentCardCost paymentCardCost = paymentCardCostRepository.findByCountry(country);
+        PaymentCardCost paymentCardCost = this.paymentCardCostRepository.findByCountry(country);
 
         if (paymentCardCost == null){
-            log.info("Country not specified, cost set to $10.");
-            cardCost.setCost(10.0);
-            cardCost.setCountry("Other");
+            log.info("Country cost not configured.");
+            cardCost.setCost(this.paymentCardDefaultCost);
+            cardCost.setCountry(this.paymentCardCountryOther);
 
             return cardCost;
         }

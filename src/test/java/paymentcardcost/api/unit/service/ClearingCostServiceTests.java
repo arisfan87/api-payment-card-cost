@@ -1,14 +1,9 @@
-package paymentcardcost.api.service;
+package paymentcardcost.api.unit.service;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
@@ -35,7 +30,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void createClearingCost_save_runOnlyOnce() {
+    public void clearingCost_create_saveRunOnlyOnce() {
 
         // arrange
         PaymentCardCost pcc = new PaymentCardCost("GB", 18.0);
@@ -48,7 +43,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void deleteClearingCost_save_runOnlyOnce() {
+    public void clearingCost_delete_deleteRunOnlyOnce() {
 
         // arrange
         PaymentCardCost pcc = new PaymentCardCost("GB", 18.0);
@@ -61,7 +56,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test(expected = NotFoundException.class)
-    public void updateClearingCost_throwsNotFound_run0Times() throws NotFoundException {
+    public void clearingCost_update_throwsNotFound() throws NotFoundException {
 
         // arrange
         when(paymentCardCostRepositoryMock.findByCountry("ES")).thenReturn(null);
@@ -76,7 +71,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void updateClearingCost_save_runTimesOnce() throws NotFoundException {
+    public void clearingCost_update_saveRunTimesOnce() throws NotFoundException {
 
         // arrange
         when(paymentCardCostRepositoryMock.findByCountry("GB")).thenReturn(new PaymentCardCost("GB", 16.0));
@@ -90,7 +85,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void findAllClearingCost_findAll_runTimesOnceAndNotEmpty() {
+    public void clearingCost_findAll_findAllRunTimesOnceAndNotEmpty() {
 
         // arrange
         List<PaymentCardCost> paymentCardCosts = new ArrayList<PaymentCardCost>();
@@ -110,7 +105,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void ClearingCost_findByCountry_runTimesOnceAndNotEmpty() throws NotFoundException {
+    public void clearingCost_findByCountry_runTimesOnceAndNotEmpty() throws NotFoundException {
 
         // arrange
         when(paymentCardCostRepositoryMock
@@ -127,7 +122,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test(expected = NotFoundException.class)
-    public void ClearingCost_findByCountry_throwsNotFound() throws NotFoundException {
+    public void clearingCost_findByCountry_throwsNotFound() throws NotFoundException {
 
         // arrange
         when(paymentCardCostRepositoryMock

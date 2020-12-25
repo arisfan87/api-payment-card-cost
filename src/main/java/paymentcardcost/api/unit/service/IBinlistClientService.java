@@ -1,4 +1,4 @@
-package paymentcardcost.api.service;
+package paymentcardcost.api.unit.service;
 
 import paymentcardcost.api.models.dto.BinlistDto;
 
