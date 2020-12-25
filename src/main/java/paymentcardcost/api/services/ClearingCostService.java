@@ -19,12 +19,14 @@ public class ClearingCostService implements IClearingCostService{
     }
 
     @Override
-    public void create(PaymentCardCost paymentCardCost) {
+    public void create(PaymentCardCost paymentCardCost)
+    {
         this.paymentCardCostRepository.save(paymentCardCost);
     }
 
     @Override
     public void delete(PaymentCardCost paymentCardCost) {
+
         this.paymentCardCostRepository.delete(paymentCardCost);
     }
 
@@ -32,9 +34,9 @@ public class ClearingCostService implements IClearingCostService{
     public void update(PaymentCardCost paymentCardCost) throws NotFoundException {
         PaymentCardCost cardCost = this.paymentCardCostRepository.getByCountry(paymentCardCost.country);
 
-        if (cardCost != null) {
-            this.paymentCardCostRepository.save(paymentCardCost);
-        }
+        if (cardCost == null) throw new NotFoundException();
+
+        this.paymentCardCostRepository.save(paymentCardCost);
     }
 
     @Override
@@ -44,6 +46,10 @@ public class ClearingCostService implements IClearingCostService{
 
     @Override
     public PaymentCardCost getByCountry(String country) throws NotFoundException {
-        return this.paymentCardCostRepository.getByCountry(country);
+        PaymentCardCost cardCost = this.paymentCardCostRepository.getByCountry(country);
+
+        if (cardCost == null) throw new NotFoundException();
+
+        return cardCost;
     }
 }
