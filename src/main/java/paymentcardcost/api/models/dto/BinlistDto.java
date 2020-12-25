@@ -1,4 +1,4 @@
-package paymentcardcost.api.models;
+package paymentcardcost.api.models.dto;
 
 public class BinlistDto {
     public Number number;
@@ -6,7 +6,7 @@ public class BinlistDto {
     public String type;
     public String brand;
     public boolean prepaid;
-    public Country country;
+    public CountryDto country;
     public Bank bank;
 }
 

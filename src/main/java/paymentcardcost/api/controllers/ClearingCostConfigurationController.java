@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import paymentcardcost.api.controllers.models.ClearingCostConfigurationRequest;
 import paymentcardcost.api.infrastructure.NotFoundException;
-import paymentcardcost.api.models.PaymentCardCost;
-import paymentcardcost.api.services.IClearingCostService;
+import paymentcardcost.api.models.domain.PaymentCardCost;
+import paymentcardcost.api.service.IClearingCostService;
 
 import java.util.List;
 
@@ -23,14 +23,15 @@ public class ClearingCostConfigurationController {
 
     @RequestMapping(value = "list")
     @ResponseStatus(HttpStatus.OK)
-    public List<PaymentCardCost> list(){
+    public List<PaymentCardCost> list()
+    {
         return this.clearingCostService.findAll();
     }
 
     @GetMapping(value = "{code}")
     @ResponseStatus(HttpStatus.OK)
     public PaymentCardCost getByCountry(@PathVariable String code) throws NotFoundException {
-        return this.clearingCostService.getByCountry(code);
+        return this.clearingCostService.findByCountry(code);
     }
 
     @PostMapping

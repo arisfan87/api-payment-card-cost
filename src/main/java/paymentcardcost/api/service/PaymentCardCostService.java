@@ -1,15 +1,12 @@
-package paymentcardcost.api.services;
+package paymentcardcost.api.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import paymentcardcost.api.infrastructure.TooManyRequestsException;
-import paymentcardcost.api.models.BinlistDto;
-import paymentcardcost.api.models.CardCostDto;
-import paymentcardcost.api.models.PaymentCardCost;
+import paymentcardcost.api.models.dto.BinlistDto;
+import paymentcardcost.api.models.dto.CardCostDto;
+import paymentcardcost.api.models.domain.PaymentCardCost;
 import paymentcardcost.api.repositories.PaymentCardCostRepository;
-
-import java.util.Optional;
 
 @Service
 @Log4j2
@@ -35,7 +32,7 @@ public class PaymentCardCostService implements IPaymentCardCostService {
 
         CardCostDto cardCost = new CardCostDto();
 
-        PaymentCardCost paymentCardCost = paymentCardCostRepository.getByCountry(country);
+        PaymentCardCost paymentCardCost = paymentCardCostRepository.findByCountry(country);
 
         if (paymentCardCost == null){
             log.info("Country not specified, cost set to $10.");

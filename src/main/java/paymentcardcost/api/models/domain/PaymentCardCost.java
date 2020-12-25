@@ -1,6 +1,19 @@
-package paymentcardcost.api.models;
+package paymentcardcost.api.models.domain;
 
-public class CardCostDto {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "CardCost")
+public class PaymentCardCost {
+
+    protected PaymentCardCost() {}
+
+    public PaymentCardCost(String country, Double cost) {
+        this.country = country;
+        this.cost = cost;
+    }
+
+    @Id
     public String country;
 
     public String getCountry() {

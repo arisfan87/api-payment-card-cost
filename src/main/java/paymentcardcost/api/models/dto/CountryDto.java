@@ -1,6 +1,6 @@
-package paymentcardcost.api.models;
+package paymentcardcost.api.models.dto;
 
-public class Country {
+public class CountryDto {
     public String numeric;
     public String alpha2;
     public String name;

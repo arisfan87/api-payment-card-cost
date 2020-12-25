@@ -5,11 +5,11 @@ import paymentcardcost.api.controllers.models.CardCostRequest;
 import paymentcardcost.api.controllers.models.CardCostResponse;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.infrastructure.TooManyRequestsException;
-import paymentcardcost.api.models.CardCostDto;
+import paymentcardcost.api.models.dto.CardCostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import paymentcardcost.api.services.IPaymentCardCostService;
+import paymentcardcost.api.service.IPaymentCardCostService;
 
 @RestController()
 @RequestMapping("/api")
