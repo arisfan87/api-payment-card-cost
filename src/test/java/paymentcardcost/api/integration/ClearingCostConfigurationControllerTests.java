@@ -25,7 +25,6 @@ public class ClearingCostConfigurationControllerTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
     private static final String URL = "/api/cost-config";
 
     @Test

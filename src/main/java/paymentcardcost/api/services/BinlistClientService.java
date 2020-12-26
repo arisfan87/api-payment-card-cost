@@ -1,4 +1,4 @@
-package paymentcardcost.api.unit.service;
+package paymentcardcost.api.services;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.client.RestTemplateBuilder;

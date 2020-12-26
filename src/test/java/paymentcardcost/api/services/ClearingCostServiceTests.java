@@ -1,4 +1,4 @@
-package paymentcardcost.api.unit.service;
+package paymentcardcost.api.services;
 
 import org.junit.Before;
 import org.junit.Test;

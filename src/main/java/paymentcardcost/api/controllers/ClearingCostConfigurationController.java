@@ -9,10 +9,11 @@ import paymentcardcost.api.controllers.models.ClearingCostConfigurationRequest;
 import paymentcardcost.api.infrastructure.CountryAlreadyExistException;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
-import paymentcardcost.api.unit.service.IClearingCostService;
+import paymentcardcost.api.services.IClearingCostService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/cost-config")
@@ -44,7 +45,7 @@ public class ClearingCostConfigurationController {
     @GetMapping(value = "{code}")
     public ResponseEntity<CardCostResponse> getByCountry(@PathVariable String code)
     {
-        PaymentCardCost result = this.clearingCostService.findByCountry(code);
+        PaymentCardCost result = this.clearingCostService.findByCountry(code.toUpperCase(Locale.ROOT));
 
         if (result == null) return new ResponseEntity<CardCostResponse>(HttpStatus.NOT_FOUND);
 
