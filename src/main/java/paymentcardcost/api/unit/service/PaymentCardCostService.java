@@ -28,8 +28,6 @@ public class PaymentCardCostService implements IPaymentCardCostService {
 
         BinlistDto binDetails = this.binlistClientService.getBinMetadata(cardNumber);
 
-        if (binDetails == null) return null;
-
         String country = binDetails.country.alpha2;
 
         CardCostDto cardCost = new CardCostDto();

@@ -2,6 +2,7 @@ package paymentcardcost.api.unit.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import paymentcardcost.api.infrastructure.CountryAlreadyExistException;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
 import paymentcardcost.api.repositories.PaymentCardCostRepository;
@@ -19,8 +20,13 @@ public class ClearingCostService implements IClearingCostService{
     }
 
     @Override
-    public void create(PaymentCardCost paymentCardCost)
-    {
+    public void create(PaymentCardCost paymentCardCost) throws CountryAlreadyExistException {
+        PaymentCardCost cardCost = this.paymentCardCostRepository.findByCountry(paymentCardCost.country);
+
+        if (cardCost != null) {
+            throw new CountryAlreadyExistException(String.format("Country {0} already exist.", paymentCardCost.country));
+        }
+
         this.paymentCardCostRepository.save(paymentCardCost);
     }
 
@@ -48,12 +54,12 @@ public class ClearingCostService implements IClearingCostService{
     }
 
     @Override
-    public PaymentCardCost findByCountry(String country) throws NotFoundException {
+    public PaymentCardCost findByCountry(String country) {
         PaymentCardCost cardCost = this.paymentCardCostRepository.findByCountry(country);
 
         if (cardCost == null) {
             log.warn("Cost not found for country {country}", country);
-            throw new NotFoundException();
+            return null;
         }
 
         return cardCost;

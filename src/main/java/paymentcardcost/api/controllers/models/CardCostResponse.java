@@ -1,22 +1,27 @@
 package paymentcardcost.api.controllers.models;
 
 public class CardCostResponse {
-    private String Country;
-    private double Cost;
+    private String country;
+    private double cost;
+
+    public CardCostResponse(String country, double cost){
+        this.country = country;
+        this.cost = cost;
+    }
 
     public String getCountry() {
-        return Country;
+        return this.country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = this.country;
     }
 
     public double getCost() {
-        return Cost;
+        return this.cost;
     }
 
     public void setCost(double cost) {
-        Cost = cost;
+        this.cost = cost;
     }
 }

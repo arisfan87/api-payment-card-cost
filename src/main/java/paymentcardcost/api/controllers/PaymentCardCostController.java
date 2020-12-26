@@ -1,6 +1,7 @@
 package paymentcardcost.api.controllers;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import paymentcardcost.api.controllers.models.CardCostRequest;
 import paymentcardcost.api.controllers.models.CardCostResponse;
 import paymentcardcost.api.infrastructure.NotFoundException;
@@ -24,17 +25,12 @@ public class PaymentCardCostController {
     }
 
     @RequestMapping(value = "payment-cards-cost", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public CardCostResponse CalculateCardCost(@RequestBody CardCostRequest card_number) throws TooManyRequestsException, NotFoundException {
+    public ResponseEntity<CardCostResponse>  CalculateCardCost(@RequestBody CardCostRequest card_number) throws TooManyRequestsException {
 
         CardCostDto result = this.paymentCardCostService.CalculateCardCost(card_number.card_number);
 
-        if (result == null) throw new NotFoundException();
+        CardCostResponse response = new CardCostResponse(result.country, result.cost);
 
-        CardCostResponse response = new CardCostResponse();
-        response.setCost(result.cost);
-        response.setCountry(result.country);
-
-        return response;
+        return new ResponseEntity<CardCostResponse>(response, HttpStatus.OK);
     }
 }

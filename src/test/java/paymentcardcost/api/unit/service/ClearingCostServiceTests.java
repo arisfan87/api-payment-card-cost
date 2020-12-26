@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
+import paymentcardcost.api.infrastructure.CountryAlreadyExistException;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
 import paymentcardcost.api.repositories.PaymentCardCostRepository;
@@ -30,7 +31,7 @@ public class ClearingCostServiceTests {
     }
 
     @Test
-    public void clearingCost_create_saveRunOnlyOnce() {
+    public void clearingCost_create_saveRunOnlyOnce() throws CountryAlreadyExistException {
 
         // arrange
         PaymentCardCost pcc = new PaymentCardCost("GB", 18.0);
@@ -121,8 +122,8 @@ public class ClearingCostServiceTests {
         Mockito.verify(paymentCardCostRepositoryMock, times(1)).findByCountry(Mockito.anyString());
     }
 
-    @Test(expected = NotFoundException.class)
-    public void clearingCost_findByCountry_throwsNotFound() throws NotFoundException {
+    @Test
+    public void clearingCost_findByCountryIsNull_returnsNull() {
 
         // arrange
         when(paymentCardCostRepositoryMock
@@ -133,7 +134,7 @@ public class ClearingCostServiceTests {
         PaymentCardCost sut = clearingCostService.findByCountry("GR");
 
         // assert
-        assertThatExceptionOfType(NotFoundException.class);
-        Mockito.verify(paymentCardCostRepositoryMock, times(0)).findByCountry(Mockito.anyString());
+        assertThat(sut).isNull();
+        Mockito.verify(paymentCardCostRepositoryMock, times(1)).findByCountry(Mockito.anyString());
     }
 }

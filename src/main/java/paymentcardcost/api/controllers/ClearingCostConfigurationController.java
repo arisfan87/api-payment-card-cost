@@ -2,12 +2,16 @@ package paymentcardcost.api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import paymentcardcost.api.controllers.models.CardCostResponse;
 import paymentcardcost.api.controllers.models.ClearingCostConfigurationRequest;
+import paymentcardcost.api.infrastructure.CountryAlreadyExistException;
 import paymentcardcost.api.infrastructure.NotFoundException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
 import paymentcardcost.api.unit.service.IClearingCostService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,38 +26,56 @@ public class ClearingCostConfigurationController {
     }
 
     @RequestMapping(value = "list")
-    @ResponseStatus(HttpStatus.OK)
-    public List<PaymentCardCost> list()
+    public ResponseEntity<List<CardCostResponse>> list()
     {
-        return this.clearingCostService.findAll();
+        List<PaymentCardCost> results = this.clearingCostService.findAll();
+
+        if (results == null) return new ResponseEntity<List<CardCostResponse>>(HttpStatus.NOT_FOUND);
+
+        List<CardCostResponse> cardCostsResponse = new ArrayList<CardCostResponse>();
+
+        for (PaymentCardCost cardCost : results) {
+            cardCostsResponse.add(new CardCostResponse(cardCost.country, cardCost.cost));
+        }
+
+        return new ResponseEntity<List<CardCostResponse>>(cardCostsResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = "{code}")
-    @ResponseStatus(HttpStatus.OK)
-    public PaymentCardCost getByCountry(@PathVariable String code) throws NotFoundException {
-        return this.clearingCostService.findByCountry(code);
+    public ResponseEntity<CardCostResponse> getByCountry(@PathVariable String code)
+    {
+        PaymentCardCost result = this.clearingCostService.findByCountry(code);
+
+        if (result == null) return new ResponseEntity<CardCostResponse>(HttpStatus.NOT_FOUND);
+
+        CardCostResponse cardCostResponse = new CardCostResponse(result.country, result.cost);
+
+        return new ResponseEntity<CardCostResponse>(cardCostResponse, HttpStatus.OK);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody final ClearingCostConfigurationRequest configuration) {
+    public ResponseEntity<Void> create(@RequestBody final ClearingCostConfigurationRequest configuration) throws CountryAlreadyExistException {
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);
         this.clearingCostService.create(cardCost);
+
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     @DeleteMapping()
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestBody final ClearingCostConfigurationRequest configuration) {
+    public ResponseEntity<Void> delete(@RequestBody final ClearingCostConfigurationRequest configuration) {
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);
         this.clearingCostService.delete(cardCost);
+
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody final ClearingCostConfigurationRequest configuration) throws NotFoundException
+    public ResponseEntity<Void> update(@RequestBody final ClearingCostConfigurationRequest configuration) throws NotFoundException
     {
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);
 
         this.clearingCostService.update(cardCost);
+
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 }
