@@ -43,6 +43,21 @@ public class ClearingCostConfigurationControllerTests {
     }
 
     @Test
+    public void clearingCost_createWithInvalidRequest_400BadRequest() {
+
+        // arrange
+        ClearingCostConfigurationRequest configuration = new ClearingCostConfigurationRequest();
+        configuration.cost = 2.0;
+        configuration.country = "E1";
+
+        // act
+        ResponseEntity<Void> response = restTemplate.postForEntity(URL, configuration, void.class);
+
+        // assert
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCodeValue());
+    }
+
+    @Test
     public void clearingCost_createCountryAlreadyConfigured_409Conflict() {
 
         // arrange

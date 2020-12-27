@@ -1,5 +1,7 @@
 package paymentcardcost.api.controllers;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,12 @@ public class ClearingCostConfigurationController {
         this.clearingCostService = clearingCostService;
     }
 
-    @RequestMapping(value = "list")
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Resource not found"),
+            @ApiResponse(code = 200, message = "Configured card cost."),
+    })
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<CardCostResponse>> list()
     {
         List<PaymentCardCost> results = this.clearingCostService.findAll();
@@ -42,7 +49,12 @@ public class ClearingCostConfigurationController {
         return new ResponseEntity<List<CardCostResponse>>(cardCostsResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "{code}")
+    @RequestMapping(value = "{code}", method = RequestMethod.GET)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Resource not found"),
+            @ApiResponse(code = 200, message = "Configured card cost."),
+    })
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CardCostResponse> getByCountry(@PathVariable String code)
     {
         PaymentCardCost result = this.clearingCostService.findByCountry(code.toUpperCase(Locale.ROOT));
@@ -54,15 +66,25 @@ public class ClearingCostConfigurationController {
         return new ResponseEntity<CardCostResponse>(cardCostResponse, HttpStatus.OK);
     }
 
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "New country cost configured."),
+            @ApiResponse(code = 400, message = "Invalid request model."),
+            @ApiResponse(code = 409, message = "Country already configured.")
+    })
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody final ClearingCostConfigurationRequest configuration) throws CountryAlreadyExistException {
+
+        if (!configuration.isCountryInputValid()) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);
         this.clearingCostService.create(cardCost);
 
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping()
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@RequestBody final ClearingCostConfigurationRequest configuration) {
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);
         this.clearingCostService.delete(cardCost);
@@ -70,7 +92,12 @@ public class ClearingCostConfigurationController {
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Update completed."),
+            @ApiResponse(code = 404, message = "Resource not found."),
+    })
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(@RequestBody final ClearingCostConfigurationRequest configuration) throws NotFoundException
     {
         PaymentCardCost cardCost = new PaymentCardCost(configuration.country, configuration.cost);

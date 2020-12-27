@@ -1,5 +1,6 @@
 package paymentcardcost.api.controllers.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import java.util.Locale;
@@ -26,4 +27,12 @@ public class ClearingCostConfigurationRequest {
     }
 
     public Double cost;
+
+    @JsonIgnore
+    public boolean isCountryInputValid(){
+        return this.country.toUpperCase(Locale.ROOT)
+                .replaceAll("[^A-Z]", "")
+                .replaceAll("(.)(?=.*\\1)", "")
+                .length() == 2;
+    }
 }

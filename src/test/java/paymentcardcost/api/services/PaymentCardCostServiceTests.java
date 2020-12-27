@@ -5,6 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
+import paymentcardcost.api.infrastructure.BadRequestException;
+import paymentcardcost.api.infrastructure.NotFoundException;
+import paymentcardcost.api.infrastructure.TooManyRequestsException;
 import paymentcardcost.api.models.domain.PaymentCardCost;
 import paymentcardcost.api.models.dto.BinlistDto;
 import paymentcardcost.api.models.dto.CardCostDto;
@@ -31,7 +34,7 @@ public class PaymentCardCostServiceTests {
     }
 
     @Test
-    public void calculateCardCost_alpha2IsUS_equalTo10(){
+    public void calculateCardCost_alpha2IsUS_equalTo10() throws NotFoundException, TooManyRequestsException, BadRequestException {
 
         // arrange
         final int bin = 42424242;
@@ -53,7 +56,7 @@ public class PaymentCardCostServiceTests {
     }
 
     @Test
-    public void calculateCardCost_countryNotConfigured_costEqualToDefault(){
+    public void calculateCardCost_countryNotConfigured_costEqualToDefault() throws NotFoundException, TooManyRequestsException, BadRequestException {
 
         // arrange
         final int bin = 42424242;

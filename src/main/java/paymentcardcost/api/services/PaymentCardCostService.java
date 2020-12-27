@@ -3,6 +3,9 @@ package paymentcardcost.api.services;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import paymentcardcost.api.infrastructure.BadRequestException;
+import paymentcardcost.api.infrastructure.NotFoundException;
+import paymentcardcost.api.infrastructure.TooManyRequestsException;
 import paymentcardcost.api.models.dto.BinlistDto;
 import paymentcardcost.api.models.dto.CardCostDto;
 import paymentcardcost.api.models.domain.PaymentCardCost;
@@ -24,7 +27,7 @@ public class PaymentCardCostService implements IPaymentCardCostService {
     }
 
     @Override
-    public CardCostDto CalculateCardCost(int cardNumber) {
+    public CardCostDto CalculateCardCost(int cardNumber) throws NotFoundException, TooManyRequestsException, BadRequestException {
 
         BinlistDto binDetails = this.binlistClientService.getBinMetadata(cardNumber);
 

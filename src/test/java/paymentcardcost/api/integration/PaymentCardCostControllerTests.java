@@ -14,6 +14,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import paymentcardcost.api.controllers.models.CardCostRequest;
 import paymentcardcost.api.controllers.models.CardCostResponse;
+import paymentcardcost.api.infrastructure.BadRequestException;
+import paymentcardcost.api.infrastructure.NotFoundException;
+import paymentcardcost.api.infrastructure.TooManyRequestsException;
 import paymentcardcost.api.models.dto.BinlistDto;
 import paymentcardcost.api.models.dto.CountryDto;
 import paymentcardcost.api.services.IBinlistClientService;
@@ -40,7 +43,7 @@ public class PaymentCardCostControllerTests {
     private static final String URL = "/api/payment-cards-cost";
 
     @Test
-    public void calculateCardCost_alreadyConfiguredCountry_200OK() {
+    public void calculateCardCost_alreadyConfiguredCountry_200OK() throws NotFoundException, TooManyRequestsException, BadRequestException {
 
         // arrange
         final double expectedUScardCost = 5.0;
@@ -62,7 +65,7 @@ public class PaymentCardCostControllerTests {
     }
 
     @Test
-    public void calculateCardCost_countryNotConfigured_200OK() {
+    public void calculateCardCost_countryNotConfigured_200OK() throws NotFoundException, TooManyRequestsException, BadRequestException {
 
         // arrange
         final double expectedCardCostForNotConfiguredCountry = 10.0;
